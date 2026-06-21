@@ -1,11 +1,7 @@
-# Lithium: A Django-Powered Boilerplate
-Lithium is a batteries-included Django starter project with everything you need to start coding, including user authentication, static files, default styling, debugging, DRY forms, custom error pages, and more.
-
-> This project was formerly known as _DjangoX_ but was renamed to _Lithium_ in November 2024.
-
-https://github.com/user-attachments/assets/8698e9dd-1794-4f96-9c3f-85add17e330b
+# Easy Starter Django (based on [Lithium](https://github.com/wsvincent/lithium))
 
 ## 🚀 Features
+
 - Django 6.0 & Python 3.13
 - Installation via [uv](https://github.com/astral-sh/uv), [Pip](https://pypi.org/project/pip/) or [Docker](https://www.docker.com/)
 - User authentication--log in, sign up, password reset--via [django-allauth](https://github.com/pennersr/django-allauth)
@@ -16,16 +12,18 @@ https://github.com/user-attachments/assets/8698e9dd-1794-4f96-9c3f-85add17e330b
 - Custom 404, 500, and 403 error pages
 
 ## Table of Contents
-* **[Installation](#installation)**
-  * [uv](#uv)
-  * [Pip](#pip)
-  * [Docker](#docker)
-* [Next Steps](#next-steps)
-* [Contributing](#contributing)
-* [Support](#support)
-* [License](#license)
+
+- **[Installation](#installation)**
+  - [uv](#uv)
+  - [Pip](#pip)
+  - [Docker](#docker)
+- [Next Steps](#next-steps)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
 
 ## 📖 Installation
+
 Lithium can be installed via Pip or Docker. To start, clone the repo to your local computer and change into the proper directory.
 
 ```
@@ -34,6 +32,7 @@ $ cd lithium
 ```
 
 ### uv
+
 You can use [uv](https://docs.astral.sh/uv/) to create a dedicated virtual environment.
 
 ```
@@ -50,6 +49,7 @@ $ uv run manage.py runserver
 ```
 
 ### Pip
+
 To use Pip, create a new virtual environment and then install all packages hosted in `requirements.txt`. Run `migrate` to configure the initial database. and `createsuperuser` to create a new superuser account for accessing the admin. Execute the `runserver` command to start up the local server.
 
 ```
@@ -62,10 +62,10 @@ To use Pip, create a new virtual environment and then install all packages hoste
 
 ### Docker
 
-To use Docker with PostgreSQL as the database update the `DATABASES` section of `django_project/settings.py` to reflect the following:
+To use Docker with PostgreSQL as the database update the `DATABASES` section of `easy_starter_django/settings.py` to reflect the following:
 
 ```python
-# django_project/settings.py
+# easy_starter_django/settings.py
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -78,7 +78,7 @@ DATABASES = {
 }
 ```
 
-The `INTERNAL_IPS` configuration in `django_project/settings.py` must be also be updated:
+The `INTERNAL_IPS` configuration in `easy_starter_django/settings.py` must be also be updated:
 
 ```python
 # config/settings.py
@@ -113,8 +113,90 @@ Contributions, issues and feature requests are welcome! See [CONTRIBUTING.md](ht
 
 ## ⭐️ Support
 
-Give a ⭐️  if this project helped you!
+Give a ⭐️ if this project helped you!
 
-## License
+## Create new repo from the template
 
-[The MIT License](LICENSE)
+- change all the easy_starter_django in the project
+- Ctrl + Shift + F -> search "easy_starter_django" -> replace all with Ctrl + Shift + H
+- remove .env track from git
+
+```bash
+git rm --cached -- .env.*
+```
+
+## Packages
+
+```bash
+pip install django-environ dj_database_url psycopg
+```
+
+## Formatter
+
+- Black
+
+## Environment Variable Setup for Terminal
+
+- Create new SECRET_KEY and put it in your .env files
+
+‍‍‍```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+
+````
+
+- Add .env.* to .gitignore
+
+```bash
+export DJANGO_ENV=dev  # for running on local server
+````
+
+## Database
+
+- Default DB = PostgreSQL
+- Fallback DB = SQLite
+
+### Setup Local PostgreSQL
+
+```bash
+sudo -u postgres psql  # Run psql
+
+
+CREATE USER myuser WITH PASSWORD 'mypassword';  # Create new user
+
+CREATE DATABASE mydb OWNER myuser;  # Create new DB
+
+\q  # Quit psql
+```
+
+- DB URL pattern to use as a DATABSE_URL env variable value:
+
+postgresql://{env('DB_USER')}:{env('DB_PASSWORD')}@localhost:5432/{env('DB_NAME')}
+
+- Apply migrations
+
+```bash
+ptyhon manage.py migrate
+```
+
+## API
+
+### Success
+
+```json
+{
+  "success": true,
+  "message": "ثبت‌نام با موفقیت انجام شد.",
+  "data": {}
+}
+```
+
+### Failed
+
+```json
+{
+  "success": false,
+  "code": "USER_NOT_FOUND",
+  "message": "کاربری با این شماره موبایل وجود ندارد.",
+  "errors": null
+}
+```

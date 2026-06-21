@@ -1,23 +1,34 @@
 from pathlib import Path
+import os
+from environs import Env
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Create environs Env instance
+env = Env()
 
-# Quick-start development settings - unsuitable for production
+# Read .env file based on DJANGO_ENV (dev (default) or prod)
+env_file = Path(BASE_DIR) / f".env.{os.environ.get('DJANGO_ENV', 'dev')}"
+env.read_env(str(env_file))
+
+# Quick-start production settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-0peo@#x9jur3!h$ryje!$879xww8y1y66jx!%*#ymhg&jkozs2"
+SECRET_KEY = env.str("SECRET_KEY")
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
-
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=["127.0.0.1"],
+)
 
 # Application definition
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -56,10 +67,10 @@ MIDDLEWARE = [
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
-ROOT_URLCONF = "django_project.urls"
+ROOT_URLCONF = "easy_starter_django.urls"
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-WSGI_APPLICATION = "django_project.wsgi.application"
+WSGI_APPLICATION = "easy_starter_django.wsgi.application"
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
 TEMPLATES = [
@@ -78,12 +89,16 @@ TEMPLATES = [
     },
 ]
 
+# Database (default: PostgreSQL via DATABASE_URL, fallback: SQLite)
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
+DATABASE_URL = env.str("DATABASE_URL", default="").strip()
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}",
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # For Docker/PostgreSQL usage uncomment this and comment the DATABASES config above
