@@ -24,11 +24,11 @@
 
 ## 📖 Installation
 
-Lithium can be installed via Pip or Docker. To start, clone the repo to your local computer and change into the proper directory.
+**Easy Starter Django** can be installed via Pip or Docker. To start, clone the repo to your local computer and change into the proper directory.
 
 ```
-$ git clone https://github.com/wsvincent/lithium.git
-$ cd lithium
+$ git clone https://github.com/Easy-Starter/easy-starter-django.git
+$ cd easy-starter-django
 ```
 
 ### uv
@@ -109,7 +109,7 @@ I cover all of these steps in tutorials and premium courses over at [LearnDjango
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome! See [CONTRIBUTING.md](https://github.com/wsvincent/lithium/blob/master/CONTRIBUTING.md).
+Contributions, issues and feature requests are welcome!
 
 ## ⭐️ Support
 
